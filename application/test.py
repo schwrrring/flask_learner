@@ -1,17 +1,28 @@
 from flask_testing import TestCase
+from application import create_app, db
+from models import User
 
-from application.app import create_app, db
 
-
-
-class SomeTest(TestCase):
+class MyTest(TestCase):
 
     SQLALCHEMY_DATABASE_URI = "sqlite://"
     TESTING = True
 
     def create_app(self):
-        return create_app()
 
+        # pass in test configuration
+        return create_app(self)
+
+    def setUp(self):
+
+        db.create_all()
+
+    def tearDown(self):
+
+        db.session.remove()
+        db.drop_all()
+
+class SomeTest(MyTest):
     def test_something(self):
         user = User('test')
         db.session.add(user)
@@ -24,3 +35,7 @@ class SomeTest(TestCase):
 
         # this raises an AssertionError
         assert user in db.session
+
+import unittest
+if __name__ == '__main__':
+    unittest.main()
