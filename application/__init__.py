@@ -10,6 +10,10 @@ def create_app():
     app = Flask(__name__)
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///addsi.db'
+    app.config['SQLALCHEMY_BINDS'] = {
+        'users':        'sqlite:///users.db',
+        'news':        'sqlite:///news.db',
+    }
 
     db.init_app(app)
 

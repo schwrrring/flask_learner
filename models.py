@@ -12,4 +12,4 @@ class News(db.Model):
     __table_args__ = {"schema": "exclude_from_migrations"}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
-    nix = db.Column(db.String(128))
+
