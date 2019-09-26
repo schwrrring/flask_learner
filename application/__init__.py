@@ -4,23 +4,20 @@ from flask_migrate import Migrate
 
 
 db = SQLAlchemy()
+# https://flask-migrate.readthedocs.io/en/latest/
 migrate = Migrate()
 
-def create_app():
+
+def create_app(config_type):
     app = Flask(__name__)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///addsi.db'
-    app.config['SQLALCHEMY_BINDS'] = {
-        'users':        'sqlite:///users.db',
-        'news':        'sqlite:///news.db',
-    }
-
+    app.config.from_object("config." + str(config_type))
     db.init_app(app)
 
     with app.app_context():
-        from application.models import User
-        from application.routes import add_user, get_user
 
+        from application.models import User, Meldung
+        from application.routes import add_user, get_user
     migrate.init_app(app, db)
 
     return app
